@@ -17,7 +17,7 @@ from boto.exception import SQSError
 from boto.sqs.message import Message, RawMessage
 from botocore.exceptions import ClientError
 from freezegun import freeze_time
-from moto import mock_sqs, mock_sqs_deprecated, mock_lambda, mock_logs, settings
+from rescue_moto import mock_sqs, mock_sqs_deprecated, mock_lambda, mock_logs, settings
 from unittest import SkipTest
 
 if sys.version_info[0] < 3:
@@ -28,8 +28,8 @@ else:
 import pytest
 from tests.helpers import requires_boto_gte
 from tests.test_awslambda.test_lambda import get_test_zip_file1, get_role_name
-from moto.core import ACCOUNT_ID
-from moto.sqs.models import (
+from rescue_moto.core import ACCOUNT_ID
+from rescue_moto.sqs.models import (
     MAXIMUM_MESSAGE_SIZE_ATTR_LOWER_BOUND,
     MAXIMUM_MESSAGE_SIZE_ATTR_UPPER_BOUND,
     MAXIMUM_MESSAGE_LENGTH,
@@ -791,7 +791,10 @@ def test_send_receive_message_with_attributes_with_labels():
     response = queue.send_message(
         MessageBody="test message",
         MessageAttributes={
-            "somevalue": {"StringValue": "somevalue", "DataType": "String.custom",}
+            "somevalue": {
+                "StringValue": "somevalue",
+                "DataType": "String.custom",
+            }
         },
     )
 
@@ -2581,7 +2584,12 @@ def test_send_messages_to_fifo_without_message_group_id():
 
     with pytest.raises(Exception) as e:
         queue.send_messages(
-            Entries=[{"Id": "id_1", "MessageBody": "body_1",},]
+            Entries=[
+                {
+                    "Id": "id_1",
+                    "MessageBody": "body_1",
+                },
+            ]
         )
     ex = e.value
     ex.response["Error"]["Code"].should.equal("MissingParameter")
@@ -2651,7 +2659,9 @@ def test_invoke_function_from_sqs_exception():
 @mock_sqs
 def test_maximum_message_size_attribute_default():
     sqs = boto3.resource("sqs", region_name="eu-west-3")
-    queue = sqs.create_queue(QueueName="test-queue",)
+    queue = sqs.create_queue(
+        QueueName="test-queue",
+    )
     int(queue.attributes["MaximumMessageSize"]).should.equal(MAXIMUM_MESSAGE_LENGTH)
     with pytest.raises(Exception) as e:
         queue.send_message(MessageBody="a" * (MAXIMUM_MESSAGE_LENGTH + 1))
@@ -2726,7 +2736,11 @@ def test_fifo_queue_deduplication_with_id(
 
 @mock_sqs
 @pytest.mark.parametrize(
-    "msg_1, msg_2, expected_count", [("msg1", "msg1", 1), ("msg1", "msg2", 2),],
+    "msg_1, msg_2, expected_count",
+    [
+        ("msg1", "msg1", 1),
+        ("msg1", "msg2", 2),
+    ],
 )
 def test_fifo_queue_deduplication_withoutid(msg_1, msg_2, expected_count):
 
@@ -2743,7 +2757,8 @@ def test_fifo_queue_deduplication_withoutid(msg_1, msg_2, expected_count):
 
 
 @mock.patch(
-    "moto.sqs.models.DEDUPLICATION_TIME_IN_SECONDS", MOCK_DEDUPLICATION_TIME_IN_SECONDS
+    "rescue_moto.sqs.models.DEDUPLICATION_TIME_IN_SECONDS",
+    MOCK_DEDUPLICATION_TIME_IN_SECONDS,
 )
 @mock_sqs
 def test_fifo_queue_send_duplicate_messages_after_deduplication_time_limit():

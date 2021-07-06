@@ -5,7 +5,7 @@ import sure  # noqa
 import threading
 import time
 
-import moto.server as server
+import rescue_moto.server as server
 
 """
 Test the different server responses
@@ -21,7 +21,7 @@ def test_sqs_list_identities():
 
     # Make sure that we can receive messages from queues whose name contains dots (".")
     # The AWS API mandates that the names of FIFO queues use the suffix ".fifo"
-    # See: https://github.com/spulec/moto/issues/866
+    # See: https://github.com/spulec/rescue_moto/issues/866
 
     for queue_name in ("testqueue", "otherqueue.fifo"):
 

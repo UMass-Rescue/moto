@@ -8,7 +8,7 @@ def version_tuple(v):
     return tuple(map(int, (v.split("."))))
 
 
-# Note: See https://github.com/spulec/moto/issues/201 for why this is a
+# Note: See https://github.com/spulec/rescue_moto/issues/201 for why this is a
 # separate method.
 def skip_test():
     raise SkipTest
