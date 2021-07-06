@@ -53,7 +53,7 @@ TEST_POLICY = """
 }
 """
 
-MOCK_DEDUPLICATION_TIME_IN_SECONDS = 5
+MOCK_DEDUPLICATION_TIME_IN_SECONDS = 0.1
 
 
 @mock_sqs
@@ -2713,7 +2713,7 @@ def test_fifo_queue_send_duplicate_messages_after_deduplication_time_limit():
     )
 
     msg_queue.send_message(MessageBody="first", MessageGroupId="1")
-    time.sleep(MOCK_DEDUPLICATION_TIME_IN_SECONDS + 5)
+    time.sleep(MOCK_DEDUPLICATION_TIME_IN_SECONDS + 1)
     msg_queue.send_message(MessageBody="first", MessageGroupId="2")
     messages = msg_queue.receive_messages(MaxNumberOfMessages=2)
     messages.should.have.length_of(2)
