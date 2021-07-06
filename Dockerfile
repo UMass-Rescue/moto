@@ -1,9 +1,9 @@
 FROM python:3.7-slim
 
-ADD . /moto/
+ADD . /rescue_moto/
 ENV PYTHONUNBUFFERED 1
 
-WORKDIR /moto/
+WORKDIR /rescue_moto/
 RUN  pip3 --no-cache-dir install --upgrade pip setuptools && \
      pip3 --no-cache-dir install ".[server]"
 

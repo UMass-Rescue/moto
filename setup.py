@@ -20,7 +20,7 @@ def read(*parts):
 
 
 def get_version():
-    version_file = read("moto", "__init__.py")
+    version_file = read("rescue_moto", "__init__.py")
     version_match = re.search(
         r'^__version__ = [\'"]([^\'"]*)[\'"]', version_file, re.MULTILINE
     )
@@ -48,7 +48,7 @@ install_requires = [
 # following commit for Py2 compatibility.  They are not required for non-Py2
 # users.
 #
-#   https://github.com/mpenkov/moto/commit/00134d2df37bb4dcd5f447ef951d383bfec0903c
+#   https://github.com/mpenkov/rescue_moto/commit/00134d2df37bb4dcd5f447ef951d383bfec0903c
 #
 install_requires += [
     #
@@ -72,9 +72,7 @@ install_requires += [
 _dep_PyYAML = "PyYAML>=5.1"
 _dep_python_jose_py2 = "python-jose[cryptography]>=3.1.0,<3.3.0; python_version<'3'"
 _dep_python_jose_py3 = "python-jose[cryptography]>=3.1.0,<4.0.0; python_version>'3'"
-_dep_python_jose_ecdsa_pin = (
-    "ecdsa<0.15"  # https://github.com/spulec/moto/pull/3263#discussion_r477404984
-)
+_dep_python_jose_ecdsa_pin = "ecdsa<0.15"  # https://github.com/spulec/rescue_moto/pull/3263#discussion_r477404984
 _dep_docker = "docker>=2.5.1"
 _dep_jsondiff = "jsondiff>=1.1.2"
 _dep_aws_xray_sdk = "aws-xray-sdk!=0.96,>=0.93"
@@ -104,11 +102,19 @@ all_server_deps = all_extra_deps + ["flask", "flask-cors"]
 # i.e. even those without extra dependencies.
 # Would be good for future-compatibility, I guess.
 extras_per_service = {
-    "apigateway": [_dep_python_jose_py2, _dep_python_jose_py3, _dep_python_jose_ecdsa_pin],
+    "apigateway": [
+        _dep_python_jose_py2,
+        _dep_python_jose_py3,
+        _dep_python_jose_ecdsa_pin,
+    ],
     "awslambda": [_dep_docker],
     "batch": [_dep_docker],
     "cloudformation": [_dep_docker, _dep_PyYAML, _dep_cfn_lint, _dep_decorator],
-    "cognitoidp": [_dep_python_jose_py2, _dep_python_jose_py3, _dep_python_jose_ecdsa_pin],
+    "cognitoidp": [
+        _dep_python_jose_py2,
+        _dep_python_jose_py3,
+        _dep_python_jose_ecdsa_pin,
+    ],
     "dynamodb2": [_dep_docker],
     "dynamodbstreams": [_dep_docker],
     "ec2": [_dep_docker, _dep_sshpubkeys_py2, _dep_sshpubkeys_py3],
@@ -136,7 +142,7 @@ else:
 
 
 setup(
-    name="moto",
+    name="rescue_moto",
     version=get_version(),
     description="A library that allows your python tests to easily"
     " mock out the boto library",
@@ -144,10 +150,10 @@ setup(
     long_description_content_type="text/markdown",
     author="Steve Pulec",
     author_email="spulec@gmail.com",
-    url="https://github.com/spulec/moto",
+    url="https://github.com/spulec/rescue_moto",
     entry_points={
         "console_scripts": [
-            "moto_server = moto.server:main",
+            "rescue_moto_server = rescue_moto.server:main",
         ],
     },
     packages=find_packages(exclude=("tests", "tests.*")),

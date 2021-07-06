@@ -1,5 +1,5 @@
 import boto3
-from moto import mock_sqs, mock_cloudformation
+from rescue_moto import mock_sqs, mock_cloudformation
 
 sqs_template_with_tags = """
 {
