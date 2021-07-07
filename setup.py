@@ -20,7 +20,7 @@ def read(*parts):
 
 
 def get_version():
-    version_file = read("rescue_moto", "__init__.py")
+    version_file = read("resqs", "__init__.py")
     version_match = re.search(
         r'^__version__ = [\'"]([^\'"]*)[\'"]', version_file, re.MULTILINE
     )
@@ -48,7 +48,7 @@ install_requires = [
 # following commit for Py2 compatibility.  They are not required for non-Py2
 # users.
 #
-#   https://github.com/mpenkov/rescue_moto/commit/00134d2df37bb4dcd5f447ef951d383bfec0903c
+#   https://github.com/mpenkov/resqs/commit/00134d2df37bb4dcd5f447ef951d383bfec0903c
 #
 install_requires += [
     #
@@ -72,7 +72,9 @@ install_requires += [
 _dep_PyYAML = "PyYAML>=5.1"
 _dep_python_jose_py2 = "python-jose[cryptography]>=3.1.0,<3.3.0; python_version<'3'"
 _dep_python_jose_py3 = "python-jose[cryptography]>=3.1.0,<4.0.0; python_version>'3'"
-_dep_python_jose_ecdsa_pin = "ecdsa<0.15"  # https://github.com/spulec/rescue_moto/pull/3263#discussion_r477404984
+_dep_python_jose_ecdsa_pin = (
+    "ecdsa<0.15"  # https://github.com/spulec/resqs/pull/3263#discussion_r477404984
+)
 _dep_docker = "docker>=2.5.1"
 _dep_jsondiff = "jsondiff>=1.1.2"
 _dep_aws_xray_sdk = "aws-xray-sdk!=0.96,>=0.93"
@@ -142,7 +144,7 @@ else:
 
 
 setup(
-    name="rescue_moto",
+    name="resqs",
     version=get_version(),
     description="A library that allows your python tests to easily"
     " mock out the boto library",
@@ -150,10 +152,10 @@ setup(
     long_description_content_type="text/markdown",
     author="Steve Pulec",
     author_email="spulec@gmail.com",
-    url="https://github.com/spulec/rescue_moto",
+    url="https://github.com/spulec/resqs",
     entry_points={
         "console_scripts": [
-            "rescue_moto_server = rescue_moto.server:main",
+            "resqs_server = resqs.server:main",
         ],
     },
     packages=find_packages(exclude=("tests", "tests.*")),

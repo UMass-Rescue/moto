@@ -17,7 +17,7 @@ from boto.exception import SQSError
 from boto.sqs.message import Message, RawMessage
 from botocore.exceptions import ClientError
 from freezegun import freeze_time
-from rescue_moto import mock_sqs, mock_sqs_deprecated, mock_lambda, mock_logs, settings
+from resqs import mock_sqs, mock_sqs_deprecated, mock_lambda, mock_logs, settings
 from unittest import SkipTest
 
 if sys.version_info[0] < 3:
@@ -27,8 +27,8 @@ else:
     from unittest import SkipTest, mock
 import pytest
 from tests.helpers import requires_boto_gte
-from rescue_moto.core import ACCOUNT_ID
-from rescue_moto.sqs.models import (
+from resqs.core import ACCOUNT_ID
+from resqs.sqs.models import (
     MAXIMUM_MESSAGE_SIZE_ATTR_LOWER_BOUND,
     MAXIMUM_MESSAGE_SIZE_ATTR_UPPER_BOUND,
     MAXIMUM_MESSAGE_LENGTH,
@@ -2698,7 +2698,7 @@ def test_fifo_queue_deduplication_withoutid(msg_1, msg_2, expected_count):
 
 
 @mock.patch(
-    "rescue_moto.sqs.models.DEDUPLICATION_TIME_IN_SECONDS",
+    "resqs.sqs.models.DEDUPLICATION_TIME_IN_SECONDS",
     MOCK_DEDUPLICATION_TIME_IN_SECONDS,
 )
 @mock_sqs

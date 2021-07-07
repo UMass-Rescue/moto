@@ -1,3 +1,3 @@
-# SQS rescue_moto
+# SQS resqs
 
-rescue_moto sqs service
+resqs sqs service
